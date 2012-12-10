@@ -42,19 +42,21 @@ $(document).ready(function() {
 			if (this.mode == 'autoip'){
 				this.api_request_url = "http://api.wunderground.com/api/" + $.parseQuery().key + "/conditions/q/autoip.json"
 			}
+			var link_to_this = this.name;
 			$.ajax({
 				url : this.api_request_url,
 				dataType : "jsonp",
 				success : function(data) {
-					mainWeatherIndicator.saveWeatherDataFromWundergroundAPI(data)
+					processWeatherResponse({'link_to_parent':link_to_this, 'cache':false, 'data':data});
+					/*mainWeatherIndicator.saveWeatherDataFromWundergroundAPI(data)
 					mainWeatherIndicator.showWeather({
 					'cache' : false
-					})
+					})*/
 				},
 				error : function() {
-					mainWeatherIndicator.showWeather({
+					/*mainWeatherIndicator.showWeather({
 					'cache' : true
-					})
+					})*/
 				}
 			});
 		}
@@ -77,6 +79,7 @@ $(document).ready(function() {
 		//constructor
 		this.constructor = function(args) {
 			this.args = args//for future use
+			this.name = args.name
 			this.temperature_Locator = args.temperature_Locator
 			this.comment_line_Locator = args.comment_line_Locator
 			this.mode = args.mode
@@ -84,14 +87,27 @@ $(document).ready(function() {
 		};
 		this.constructor(args);
 	};
+	
+	function processWeatherResponse(instance){
+		return function (data) {
+   			var target = indicators[instance.link_to_instance];
+   			target.saveWeatherDataFromWundergroundAPI(data);
+   			target.showWeather({
+					'cache' : false
+					})
+ 		}
+	}
 
+	var indicators = [];
+	
 	// Use the object, passing in an initializer:
-	var mainWeatherIndicator = new WeatherIndicator({
+	indicators.mainWeatherIndicator = new WeatherIndicator({
+		name: 'mainWeatherIndicator',
 		temperature_Locator : $("#temp"),
 		comment_line_Locator : $("#time"),
 		mode : 'autoip'
 	});
 
-	mainWeatherIndicator.refresh();
+	indicators.mainWeatherIndicator.refresh();
 	
 }); 
