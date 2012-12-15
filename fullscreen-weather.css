@@ -11,8 +11,8 @@
 }
 
 #context {
-    color: #ccc;
-    background-color: #666;
+    color: #839496;
+    background-color: #002b36;
     font-family: sans-serif;
     text-align: center;
     vertical-align: middle;
@@ -25,5 +25,6 @@
 }
 
 .status {
+    color: #586e75;
     font-size: 200%;
 }
