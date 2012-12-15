@@ -1,38 +1,52 @@
-$(document).ready(function() {
-	//constants
-	var TAKEN_FROM_CACHE_PREFIX = "taken from cache: "
-	//define local storage indexes
-	var local_stored_timestamp = "weather.lastupdate_timestamp";
-	var local_stored_temp = "weather.now.value"
-	var local_stored_text = "weather.now.observation_time"
-	//variables
-	var delay = 300000;
-	//code
-	var prev_time = localStorage[local_stored_timestamp];
-	var curr_time = $.now();
-	if (( typeof (prev_time) == "undefined") || (prev_time + delay < curr_time )) {
-		localStorage[local_stored_timestamp] = curr_time;
-		$.ajax({
-			url : "http://api.wunderground.com/api/" + $.parseQuery().key + "/conditions/q/autoip.json",
-			dataType : "jsonp",
-			success : function(data) {
-				if(data.response.error){
-					$("#time").text(data.response.error.description); 
-				}else{
-					var temp =  data.current_observation.temp_c;
-					var text =  data.current_observation.observation_time;
-					localStorage[local_stored_temp] = temp;
-					localStorage[local_stored_text] = text;
-					$("#temp").text(temp);
-					$("#time").text(text); 
-				}
-			},
-			error : function() {
-				alert("Can't get the current weather conditions");
-			}
-		});
-	} else { //Use cache value
-		$("#temp").text(localStorage[local_stored_temp]);
-		$("#time").text(TAKEN_FROM_CACHE_PREFIX + localStorage[local_stored_text]);
-	}
-}); 
+$(document).ready(function () {
+    var delay = 10 * 60 * 1000;
+
+    var key = "fullscreen-weather";
+    var key_time = key + "." + "time";
+    var key_values = key + "." + "values";
+
+    var status = function (message) {
+        $("#status").text(message);
+    };
+
+    if (!localStorage) {
+        status("The browser doesn't support local storage");
+        return;
+    }
+
+    var then = localStorage[key_time];
+    var now = $.now();
+
+    var update = function (values) {
+        $("#temp").text(values.temp);
+        status(values.text);
+    };
+
+    if (then && (Number(then) + delay > now)) {
+        update(JSON.parse(localStorage[key_values]));
+        return;
+    }
+
+    $.ajax({
+        url: "http://api.wunderground.com/api/" + $.parseQuery().key + "/conditions/q/autoip.json",
+        dataType: "jsonp",
+        success: function (data) {
+            localStorage[key_time] = now;
+
+            if (data.response.error) {
+                status(data.response.error.description);
+                return;
+            }
+
+            var values = {
+                temp: data.current_observation.temp_c,
+                text: data.current_observation.observation_time
+            };
+            localStorage[key_values] = JSON.stringify(values);
+            update(values);
+        },
+        error: function () {
+            status("Can't get the current weather conditions");
+        }
+    });
+});
