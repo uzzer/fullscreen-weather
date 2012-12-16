@@ -18,6 +18,7 @@ $(document).ready(function () {
     var now = $.now();
 
     var update = function (values) {
+        $("#place").text(values.place);
         $("#temp").text(values.temp);
         status(values.text);
     };
@@ -39,6 +40,7 @@ $(document).ready(function () {
             }
 
             var values = {
+                place: data.current_observation.display_location.full,
                 temp: data.current_observation.temp_c,
                 text: data.current_observation.observation_time
             };
