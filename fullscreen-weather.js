@@ -24,9 +24,8 @@ $(document).ready(function () {
     var now = $.now();
 
     var update_current = function (weather) {
-        $("#place").text(weather.place);
         $("#temp").text(weather.temp);
-        status(weather.time);
+        status("Measured at " + weather.time + " in " + weather.place);
     };
 
     var update_hourly = function (weather) {
@@ -65,7 +64,7 @@ $(document).ready(function () {
             var weather = {
                 place: data.current_observation.display_location.full,
                 temp: data.current_observation.temp_c,
-                time: "Updated at " + format_time(data.current_observation.observation_epoch)
+                time: format_time(data.current_observation.observation_epoch)
             };
             localStorage[key_current] = JSON.stringify(weather);
             update_current(weather);
