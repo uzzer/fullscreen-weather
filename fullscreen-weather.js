@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
-    $.fn.snow({ minSize: 5, maxSize: 50, newOn: 1000, flakeColor: '#FFFFFF' }); //let it snow
+    $.fn.snow({ minSize: 5, maxSize: 50, newOn: 500, flakeColor: '#FFFFFF' }); //let it snow
 
 
     var delay = 10 * 60 * 1000;
@@ -14,6 +14,7 @@ $(document).ready(function () {
     var key_time = key + "." + "time";
     var key_current = key + "." + "current";
     var key_hourly = key + "." + "hourly";
+
     var key_structure_version = key + "." + "structure_version";
     var current_structure_version = "2.0";
 
