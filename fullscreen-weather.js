@@ -1,8 +1,5 @@
 $(document).ready(function () {
-
-    $.fn.snow({ minSize: 5, maxSize: 50, newOn: 1000, flakeColor: '#FFFFFF' }); //let it snow
-
-
+    var weather_version = "1";
     var delay = 10 * 60 * 1000;
 
     var weather_base = "http://api.wunderground.com/api/";
@@ -14,8 +11,7 @@ $(document).ready(function () {
     var key_time = key + "." + "time";
     var key_current = key + "." + "current";
     var key_hourly = key + "." + "hourly";
-    var key_structure_version = key + "." + "structure_version";
-    var current_structure_version = "2.0";
+    var key_version = key + "." + "version";
 
     var status = function (message) {
         $("#status").text(message);
@@ -26,9 +22,9 @@ $(document).ready(function () {
         return;
     }
 
-    if(localStorage[key_structure_version]!= current_structure_version){
-        localStorage.clear()
-        localStorage[key_structure_version]= current_structure_version
+    if (Number(localStorage[key_version]) != weather_version) {
+        localStorage.clear();
+        localStorage[key_version] = weather_version;
     }
 
     var then = localStorage[key_time];
@@ -51,6 +47,8 @@ $(document).ready(function () {
         update_hourly(JSON.parse(localStorage[key_hourly]));
         return;
     }
+
+    $.fn.snow({minSize: 5, maxSize: 50, newOn: 1000, flakeColor: '#FFFFFF'});
 
     $.ajax({
         url: weather_base + $.parseQuery().key + weather_current,
