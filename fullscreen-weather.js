@@ -13,6 +13,8 @@ $(document).ready(function () {
     var key_hourly = key + "." + "hourly";
     var key_version = key + "." + "version";
 
+    $.fn.snow({minSize: 5, maxSize: 50, newOn: 500, flakeColor: '#FFFFFF'});
+
     var status = function (message) {
         $("#status").text(message);
     };
@@ -47,8 +49,6 @@ $(document).ready(function () {
         update_hourly(JSON.parse(localStorage[key_hourly]));
         return;
     }
-
-    $.fn.snow({minSize: 5, maxSize: 50, newOn: 500, flakeColor: '#FFFFFF'});
 
     $.ajax({
         url: weather_base + $.parseQuery().key + weather_current,
