@@ -22,7 +22,7 @@ $(document).ready(function () {
         return;
     }
 
-    if (Number(localStorage[key_version]) != weather_version) {
+    if (localStorage[key_version] != weather_version) {
         localStorage.clear();
         localStorage[key_version] = weather_version;
     }
