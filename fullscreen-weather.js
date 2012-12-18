@@ -48,7 +48,7 @@ $(document).ready(function () {
         return;
     }
 
-    $.fn.snow({minSize: 5, maxSize: 50, newOn: 1000, flakeColor: '#FFFFFF'});
+    $.fn.snow({minSize: 5, maxSize: 50, newOn: 500, flakeColor: '#FFFFFF'});
 
     $.ajax({
         url: weather_base + $.parseQuery().key + weather_current,
@@ -107,7 +107,5 @@ $(document).ready(function () {
         error: function () {
             status("Can't get hourly weather forecast");
         }
-    })
-    ;
-})
-;
+    });
+});
