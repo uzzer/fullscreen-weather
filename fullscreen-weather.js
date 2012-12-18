@@ -1,4 +1,8 @@
 $(document).ready(function () {
+
+    $.fn.snow({ minSize: 5, maxSize: 50, newOn: 1000, flakeColor: '#FFFFFF' }); //let it snow
+
+
     var delay = 10 * 60 * 1000;
 
     var weather_base = "http://api.wunderground.com/api/";
