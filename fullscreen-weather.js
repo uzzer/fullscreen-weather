@@ -13,7 +13,18 @@ $(document).ready(function () {
     var key_hourly = key + "." + "hourly";
     var key_version = key + "." + "version";
 
-    $.fn.snow({minSize: 5, maxSize: 50, newOn: 500, flakeColor: '#FFFFFF'});
+
+	var today_is_winter = function (){
+		var this_year = new Date().getFullYear();
+		var start_of_winter = new Date(this_year,12,1);
+		var end_of_winter = new Date(this_year,3,1);
+		var today = new Date();
+		return ( today > start_of_winter || today < end_of_winter)
+	}
+	
+	if (today_is_winter()){
+    	$.fn.snow({minSize: 5, maxSize: 50, newOn: 500, flakeColor: '#FFFFFF'});
+    }
 
     var status = function (message) {
         $("#status").text(message);
